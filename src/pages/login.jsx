@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ButtonPrimary from "../components/UI/ButtonPrimary";
 import styles from "../assets/stylesheet/register.module.css";
+import LoginGoogleOauth from "../components/LoginGoogleOauth";
+import { gapi } from "gapi-script";
+
+const clientId =
+  "959897734432-vvl2g84djul3vcla8gbsuuu36k6mv8io.apps.googleusercontent.com";
 
 function Login() {
+  const start = () => {
+    gapi.client.init({
+      clientId: clientId,
+      script: "",
+    });
+  };
+
+  useEffect(() => {
+    gapi.load("client:auth2", start);
+  }, []);
+
   return (
     <div className="flex flex-col lg:flex-row w-full h-screen mx-auto">
       <div
@@ -32,8 +48,9 @@ function Login() {
                 className="input-form"
               />
             </div>
-            <div className="flex flex-col py-3">
+            <div className="flex flex-col py-3 space-y-2">
               <ButtonPrimary>Sign In</ButtonPrimary>
+              <LoginGoogleOauth />
             </div>
           </form>
         </div>
