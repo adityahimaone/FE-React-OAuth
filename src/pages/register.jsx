@@ -5,10 +5,10 @@ import styles from "../assets/stylesheet/register.module.css";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Alert from "../components/UI/Alert";
 
 function Register() {
   const navigate = useNavigate();
-  let accessToken = "";
   const {
     register,
     handleSubmit,
@@ -19,23 +19,32 @@ function Register() {
   const [registerSuccess, setRegisterSuccess] = useState(false);
 
   const onSubmit = (payload) => {
-    axios
-      .post(
-        "https://rent-car-appx.herokuapp.com/customer/auth/register",
-        payload
-      )
-      .then((res) => {
-        console.log(res.data);
-        if (res.data?.id !== null || undefined) {
-          setRegisterSuccess(true);
-        }
-      });
+    // axios
+    //   .post(
+    //     "https://rent-car-appx.herokuapp.com/customer/auth/register",
+    //     payload
+    //   )
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     if (res.data?.id !== null || undefined) {
+    //       setRegisterSuccess(true);
+    //     }
+    // });
+    setRegisterSuccess(true);
   };
 
   console.log(registerSuccess, "registerSuccess");
 
   return (
     <div className="flex flex-col lg:flex-row w-full h-screen mx-auto">
+      {registerSuccess && (
+        <Alert
+          title="Registration Success"
+          text="You can continue to login"
+          navigation="/login"
+          confirmText="Go To Login"
+        />
+      )}
       <div
         className={`hidden lg:block lg:w-[70%] ${styles["background-image-login"]}`}
       ></div>
