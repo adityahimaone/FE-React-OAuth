@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import AdminLayout from "../../layouts/AdminLayout";
 
 function Dashboard() {
-  return <div>dashboard</div>;
+  const [drawer, setDrawer] = useState(false);
+  return <AdminLayout>Content</AdminLayout>;
 }
 
 export default Dashboard;

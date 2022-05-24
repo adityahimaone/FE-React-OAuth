@@ -86,7 +86,7 @@ function Login() {
             <div className="flex flex-col py-3 space-y-2">
               <ButtonPrimary type="submit">Sign In</ButtonPrimary>
               <LoginGoogleOauth />
-              <LogoutGoogleOauth />
+              {/* <LogoutGoogleOauth /> */}
             </div>
           </form>
         </div>

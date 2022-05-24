@@ -4,11 +4,9 @@ import ButtonPrimary from "../components/UI/ButtonPrimary";
 import styles from "../assets/stylesheet/register.module.css";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Alert from "../components/UI/Alert";
 
 function Register() {
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -19,18 +17,17 @@ function Register() {
   const [registerSuccess, setRegisterSuccess] = useState(false);
 
   const onSubmit = (payload) => {
-    // axios
-    //   .post(
-    //     "https://rent-car-appx.herokuapp.com/customer/auth/register",
-    //     payload
-    //   )
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     if (res.data?.id !== null || undefined) {
-    //       setRegisterSuccess(true);
-    //     }
-    // });
-    setRegisterSuccess(true);
+    axios
+      .post(
+        "https://rent-car-appx.herokuapp.com/customer/auth/register",
+        payload
+      )
+      .then((res) => {
+        console.log(res.data);
+        if (res.data?.id !== null || undefined) {
+          setRegisterSuccess(true);
+        }
+      });
   };
 
   console.log(registerSuccess, "registerSuccess");
