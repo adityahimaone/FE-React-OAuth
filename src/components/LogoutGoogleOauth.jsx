@@ -12,6 +12,7 @@ function LogoutGoogleOauth() {
     <div>
       <GoogleLogout
         clientId={clientId}
+        className="w-full rounded-sm"
         buttonText="Logout"
         onLogoutSuccess={onSuccess}
         onLogoutFailure={onFailure}

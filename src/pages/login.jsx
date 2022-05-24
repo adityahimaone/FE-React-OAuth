@@ -2,21 +2,29 @@ import React, { useEffect } from "react";
 import ButtonPrimary from "../components/UI/ButtonPrimary";
 import styles from "../assets/stylesheet/register.module.css";
 import LoginGoogleOauth from "../components/LoginGoogleOauth";
+import LogoutGoogleOauth from "../components/LogoutGoogleOauth";
 import { gapi } from "gapi-script";
 
 const clientId =
   "959897734432-vvl2g84djul3vcla8gbsuuu36k6mv8io.apps.googleusercontent.com";
 
 function Login() {
+  let accessToken = "";
+
   const start = () => {
     gapi.client.init({
       clientId: clientId,
       script: "",
     });
+    accessToken = gapi.auth2
+      .getAuthInstance()
+      .currentUser.get()
+      .getAuthResponse(true).access_token;
   };
 
   useEffect(() => {
     gapi.load("client:auth2", start);
+    console.log(accessToken, "accc");
   }, []);
 
   return (
@@ -51,6 +59,7 @@ function Login() {
             <div className="flex flex-col py-3 space-y-2">
               <ButtonPrimary>Sign In</ButtonPrimary>
               <LoginGoogleOauth />
+              <LogoutGoogleOauth />
             </div>
           </form>
         </div>
