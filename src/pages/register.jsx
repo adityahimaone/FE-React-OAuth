@@ -1,6 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import ButtonPrimary from "../components/UI/ButtonPrimary";
-
 import styles from "../assets/stylesheet/register.module.css";
 
 function Register() {
@@ -37,12 +37,9 @@ function Register() {
               <ButtonPrimary>Sign Up</ButtonPrimary>
               <div className="inline-flex space-x-1 text-md">
                 <p>Already Have an account? </p>
-                <a
-                  href="http://login"
-                  className="hover:text-primaryDarkBlue-400"
-                >
+                <Link to="/login" className="hover:text-primaryDarkBlue-400">
                   Login
-                </a>
+                </Link>
               </div>
             </div>
           </form>
