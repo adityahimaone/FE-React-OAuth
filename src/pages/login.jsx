@@ -4,12 +4,37 @@ import styles from "../assets/stylesheet/register.module.css";
 import LoginGoogleOauth from "../components/LoginGoogleOauth";
 import LogoutGoogleOauth from "../components/LogoutGoogleOauth";
 import { gapi } from "gapi-script";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const clientId =
   "959897734432-vvl2g84djul3vcla8gbsuuu36k6mv8io.apps.googleusercontent.com";
 
 function Login() {
+  const navigate = useNavigate();
   let accessToken = "";
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (payload) => {
+    axios
+      .post("https://rent-car-appx.herokuapp.com/admin/auth/login", payload)
+      .then((res) => {
+        if (res.data.role === "admin") {
+          navigate("/dashboard");
+        }
+        if (res.data.role === "Customer") {
+          navigate("/home");
+        }
+      });
+  };
+
+  console.log(watch("example"));
 
   const start = () => {
     gapi.client.init({
@@ -37,7 +62,7 @@ function Login() {
           <h1 className="text-2xl text-left font-bold my-5">
             Welcome, Admin BCR
           </h1>
-          <form action="" className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="flex flex-col space-y-1">
               <label htmlFor="email">Email</label>
               <input
@@ -45,6 +70,7 @@ function Login() {
                 id="email"
                 placeholder="Contoh : jhondoe@gmail.com"
                 className="input-form"
+                {...register("email")}
               />
             </div>
             <div className="flex flex-col space-y-1">
@@ -54,10 +80,11 @@ function Login() {
                 id="password"
                 placeholder="6+ Karakter"
                 className="input-form"
+                {...register("password")}
               />
             </div>
             <div className="flex flex-col py-3 space-y-2">
-              <ButtonPrimary>Sign In</ButtonPrimary>
+              <ButtonPrimary type="submit">Sign In</ButtonPrimary>
               <LoginGoogleOauth />
               <LogoutGoogleOauth />
             </div>
