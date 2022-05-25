@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { BiX, BiMenu } from "react-icons/bi";
 
+
 function Navbar() {
   const [offcanvas, setOffcanvas] = useState(false);
   return (

@@ -5,14 +5,18 @@ import LoginGoogleOauth from "../components/LoginGoogleOauth";
 import LogoutGoogleOauth from "../components/LogoutGoogleOauth";
 import { gapi } from "gapi-script";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAuthLogin } from "../stores/authLoginSlice";
+import { apiFetch } from "../utils/apiFetch";
 
 const clientId =
   "959897734432-vvl2g84djul3vcla8gbsuuu36k6mv8io.apps.googleusercontent.com";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   let accessToken = "";
   const {
     register,
@@ -22,19 +26,16 @@ function Login() {
   } = useForm();
 
   const onSubmit = (payload) => {
-    axios
-      .post("https://rent-car-appx.herokuapp.com/admin/auth/login", payload)
-      .then((res) => {
-        if (res.data.role === "admin") {
-          navigate("/dashboard");
-        }
-        if (res.data.role === "Customer") {
-          navigate("/home");
-        }
-      });
+    apiFetch.post("/admin/auth/login", payload).then((res) => {
+      dispatch(setAuthLogin(res.data));
+      if (res.data.role === "admin") {
+        navigate("/dashboard");
+      }
+      if (res.data.role === "Customer") {
+        navigate("/home");
+      }
+    });
   };
-
-  console.log(watch("example"));
 
   const start = () => {
     gapi.client.init({
@@ -50,6 +51,9 @@ function Login() {
   useEffect(() => {
     gapi.load("client:auth2", start);
     console.log(accessToken, "accc");
+    // if (accessToken !== null || undefined) {
+    //   navigate("/dashboard");
+    // }
   }, []);
 
   return (

@@ -3,9 +3,21 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import { BiHomeAlt, BiMenu, BiChevronDown } from "react-icons/bi";
+import LogoutGoogleOauth from "../LogoutGoogleOauth";
+import { useDispatch } from "react-redux";
+import { logout } from "../../stores/authLoginSlice";
+import { useNavigate } from "react-router-dom";
 
 function Appbar({ drawerWidth, handleDrawerToggle }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [dropdown, setDropdown] = useState(false);
+
+  const onLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
 
   return (
     <AppBar
@@ -53,7 +65,10 @@ function Appbar({ drawerWidth, handleDrawerToggle }) {
                 className={`absolute w-[150px] right-5 top-16 bg-primaryDarkBlue-400 rounded shadow-2xl z-auto  text-white transition-all`}
               >
                 <li className="font-regular  text-center py-3 hover:bg-blue-200 hover:rounded">
-                  <button type="button">Logout</button>
+                  <button type="button" onClick={onLogout}>Logout</button>
+                </li>
+                <li>
+                  <LogoutGoogleOauth />
                 </li>
               </ul>
             )}
