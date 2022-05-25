@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthLogin } from "../stores/authLoginSlice";
 import { apiFetch } from "../utils/apiFetch";
+import { useSelector } from "react-redux";
 
 const clientId =
   "959897734432-vvl2g84djul3vcla8gbsuuu36k6mv8io.apps.googleusercontent.com";
@@ -16,6 +17,7 @@ const clientId =
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const infoUser = useSelector((state) => state.user);
 
   let accessToken = "";
   const {
@@ -28,12 +30,6 @@ function Login() {
   const onSubmit = (payload) => {
     apiFetch.post("/admin/auth/login", payload).then((res) => {
       dispatch(setAuthLogin(res.data));
-      if (res.data.role === "admin") {
-        navigate("/dashboard");
-      }
-      if (res.data.role === "Customer") {
-        navigate("/home");
-      }
     });
   };
 
@@ -51,10 +47,16 @@ function Login() {
   useEffect(() => {
     gapi.load("client:auth2", start);
     console.log(accessToken, "accc");
-    // if (accessToken !== null || undefined) {
-    //   navigate("/dashboard");
-    // }
   }, []);
+
+  useEffect(() => {
+    if (infoUser.role === "admin") {
+      navigate("/dashboard");
+    }
+    if (infoUser.role === "Customer") {
+      navigate("/home");
+    }
+  }, [infoUser]);
 
   return (
     <div className="flex flex-col lg:flex-row w-full h-screen mx-auto">
@@ -90,7 +92,7 @@ function Login() {
             <div className="flex flex-col py-3 space-y-2">
               <ButtonPrimary type="submit">Sign In</ButtonPrimary>
               <LoginGoogleOauth />
-              {/* <LogoutGoogleOauth /> */}
+              <LogoutGoogleOauth />
             </div>
           </form>
         </div>

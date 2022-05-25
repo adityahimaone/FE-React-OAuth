@@ -10,9 +10,14 @@ const clientId =
 function LoginGoogleOauth() {
   const dispatch = useDispatch();
   const onSuccess = (response) => {
-    dispatch(setAuthGoogleLogin(response.profileObj, response.accessToken));
     console.log("Login SUCCESS", response.profileObj);
     console.log("Access SUCCESS", response.accessToken);
+    const newPayload = {
+      name: response.profileObj.name,
+      email: response.profileObj.email,
+      access_token: response.accessToken,
+    };
+    dispatch(setAuthGoogleLogin(newPayload));
   };
 
   const onFailure = (response) => console.log("Login FAILURE", response);
@@ -26,7 +31,7 @@ function LoginGoogleOauth() {
         onSuccess={onSuccess}
         onFailure={onFailure}
         cookiePolicy={"single_host_origin"}
-        isSignedIn={true}
+        // isSignedIn={true}
       />
     </div>
   );

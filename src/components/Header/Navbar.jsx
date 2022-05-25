@@ -1,10 +1,22 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { BiX, BiMenu } from "react-icons/bi";
-
+import { useDispatch } from "react-redux";
+import { logout } from "../../stores/authLoginSlice";
+import { useNavigate } from "react-router-dom";
+import ButtonSecondary from "../UI/ButtonSecondary";
 
 function Navbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [offcanvas, setOffcanvas] = useState(false);
+
+  const onLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
+
   return (
     <nav className="py-3 px-10 bg-bluewhite">
       <div className="container mx-auto">
@@ -63,6 +75,9 @@ function Navbar() {
                 <Link to="/#" className=" btnSecondaryGreen">
                   Register
                 </Link>
+              </li>
+              <li>
+                <ButtonSecondary onClick={onLogout}>Logout</ButtonSecondary>
               </li>
             </ul>
           </div>
