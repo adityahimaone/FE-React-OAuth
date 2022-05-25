@@ -7,7 +7,7 @@ module.exports = {
         primaryDarkBlue: {
           400: "#0D28A6",
         },
-        primaryLimeGreen: {
+        secondaryLimeGreen: {
           400: "#5CB85F",
         },
       },
