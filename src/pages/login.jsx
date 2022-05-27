@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ButtonPrimary from "../components/UI/ButtonPrimary";
-import styles from "../assets/stylesheet/register.module.css";
 import LoginGoogleOauth from "../components/LoginGoogleOauth";
 import LogoutGoogleOauth from "../components/LogoutGoogleOauth";
 import { gapi } from "gapi-script";
@@ -10,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { setAuthLogin } from "../stores/authLoginSlice";
 import { apiFetch } from "../utils/apiFetch";
 import { useSelector } from "react-redux";
+import styles from "../assets/stylesheet/register.module.css";
 
 const clientId =
   "959897734432-vvl2g84djul3vcla8gbsuuu36k6mv8io.apps.googleusercontent.com";
@@ -18,6 +18,7 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const infoUser = useSelector((state) => state.user);
+  const [loginFailed, setLoginFailed] = useState("");
 
   let accessToken = "";
   const {
@@ -28,9 +29,14 @@ function Login() {
   } = useForm();
 
   const onSubmit = (payload) => {
-    apiFetch.post("/admin/auth/login", payload).then((res) => {
-      dispatch(setAuthLogin(res.data));
-    });
+    apiFetch
+      .post("/admin/auth/login", payload)
+      .then((res) => {
+        dispatch(setAuthLogin(res.data));
+      })
+      .catch((err) => {
+        setLoginFailed(err.response.data.message);
+      });
   };
 
   const start = () => {
@@ -46,7 +52,6 @@ function Login() {
 
   useEffect(() => {
     gapi.load("client:auth2", start);
-    console.log(accessToken, "accc");
   }, []);
 
   useEffect(() => {
@@ -89,10 +94,15 @@ function Login() {
                 {...register("password")}
               />
             </div>
-            <div className="flex flex-col py-3 space-y-2">
+            <p>
+              {loginFailed !== "" && (
+                <span className="text-red-500 text-sm">{loginFailed}</span>
+              )}
+            </p>
+            <div className="flex flex-col space-y-2">
               <ButtonPrimary type="submit">Sign In</ButtonPrimary>
               <LoginGoogleOauth />
-              <LogoutGoogleOauth />
+              {/* <LogoutGoogleOauth /> */}
             </div>
           </form>
         </div>

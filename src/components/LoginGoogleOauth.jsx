@@ -1,6 +1,5 @@
 import React from "react";
 import { GoogleLogin } from "react-google-login";
-import ButtonPrimary from "./UI/ButtonPrimary";
 import { useDispatch } from "react-redux";
 import { setAuthGoogleLogin } from "../stores/authLoginSlice";
 
@@ -10,8 +9,8 @@ const clientId =
 function LoginGoogleOauth() {
   const dispatch = useDispatch();
   const onSuccess = (response) => {
-    console.log("Login SUCCESS", response.profileObj);
-    console.log("Access SUCCESS", response.accessToken);
+    // console.log("Login SUCCESS", response.profileObj);
+    // console.log("Access SUCCESS", response.accessToken);
     const newPayload = {
       name: response.profileObj.name,
       email: response.profileObj.email,
@@ -27,7 +26,7 @@ function LoginGoogleOauth() {
       <GoogleLogin
         clientId={clientId}
         className="w-full rounded-sm"
-        buttonText="Login"
+        buttonText="Sign In With Google"
         onSuccess={onSuccess}
         onFailure={onFailure}
         cookiePolicy={"single_host_origin"}
